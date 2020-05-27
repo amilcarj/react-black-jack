@@ -1,5 +1,6 @@
 import React from 'react';
 
+import WinnerModal from '../components/WinnerModal';
 import Header from '../components/Header';
 import Action from '../components/Action';
 import Hand from './Hand';
@@ -17,7 +18,6 @@ class BlackJack extends React.Component {
 
     this.state = {
       deckId: '',
-      remainingCards: 0,
 
       playerHand: [],
       houseHand: [],
@@ -47,12 +47,14 @@ class BlackJack extends React.Component {
               playerScore: this._getScoreFromHand(cardSets[0], true),
               houseHand: cardSets[1], 
               houseScore: this._getScoreFromHand(cardSets[1]),
-              deckId: deck.deckId, 
-              remainingCards: deck.remaining
+              deckId: deck.deckId,
+              winner: '',
+            }, () => {
+              if (this.state.playerScore >= WINNING_SCORE || this.state.houseScore >= WINNING_SCORE) {
+                this._endGame();
+              }
             });
           });
-      }).then(() => {
-        this._endGame();
       }).catch(err => {
         console.log(err);
         //TODO: better error handling
@@ -62,16 +64,23 @@ class BlackJack extends React.Component {
   _endGame = () => {
     const { playerScore, houseScore } = this.state;
 
+    let winner = '';
     if (playerScore < WINNING_SCORE && houseScore < playerScore) {
-      this.setState({ winner: PLAYER });
+      winner = PLAYER;
     } else if (playerScore === WINNING_SCORE && houseScore !== WINNING_SCORE) {
-      this.setState({ winner: PLAYER });
+      winner = PLAYER;
     } else if (playerScore > WINNING_SCORE) {
-      this.setState({ winner: HOUSE });
+      winner = HOUSE;
     } else if (playerScore === houseScore) {
-      this.setState({ winner: HOUSE });
+      winner = HOUSE;
     } else if (playerScore < WINNING_SCORE && playerScore < houseScore) {
-      this.setState({ winner: HOUSE });
+      winner = HOUSE;
+    }
+
+    if (winner) {
+      this.setState({ winner }, () => {
+        this.modal.openModal();
+      });
     }
   };
 
@@ -80,7 +89,7 @@ class BlackJack extends React.Component {
     let aceCount = 0;
 
     hand.forEach(card => {
-      if (card.value === ACE && isPlayer) {
+      if (card.name === ACE && isPlayer) {
         //the instructions weren't clear about the Ace's value for the house
         //so I'm assuming it'll be 10 for the house but 11 or 1 for thee player
         aceCount++;
@@ -107,10 +116,14 @@ class BlackJack extends React.Component {
     BlackJackApi.drawCard(deckId, 1)
       .then(card => {
         const curr = [...playerHand];
-        curr.push(card);
+        curr.push(...card);
+        //TODO: animation
 
-        this.setState({ playerHand: curr, playerScore: this._getScoreFromHand(curr, true) }, () => {
-          this._endGame()
+        const playerScore = this._getScoreFromHand(curr, true);
+        this.setState({ playerHand: curr, playerScore }, () => {
+          if (playerScore >= WINNING_SCORE) {
+            this._endGame();
+          }
         });
       }).catch(err => {
         console.log(err);
@@ -125,13 +138,13 @@ class BlackJack extends React.Component {
   render() {
     const { playerHand, houseHand, playerScore, houseScore, winner } = this.state;
 
-    if (winner) {
-      //TODO: modal of the winner and restart prompt
-      console.log(winner)
-    }
-
     return (
       <div className='container'>
+        <WinnerModal 
+          playerWon={winner === PLAYER}
+          initializeGame={this._initializeGame}
+          ref={modal => this.modal = modal}
+          />
         <Header playerScore={playerScore} houseScore={houseScore} />
         <Hand hand={houseHand} />
         <Hand hand={playerHand} />

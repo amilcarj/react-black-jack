@@ -10,7 +10,7 @@ class Action extends React.Component {
     const { onPress, title } = this.props;
 
     return (
-      <div className='action' onPress={onPress}>
+      <div className='button' onClick={onPress}>
         {title}
       </div>
     );

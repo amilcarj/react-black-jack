@@ -9,7 +9,6 @@ const _getCardValue = (name) => {
 const _decodeDeck = (data) => {
   return {
     deckId: data.deck_id,
-    remaining: data.remaining
   }
 };
 

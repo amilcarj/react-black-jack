@@ -1,9 +1,58 @@
+@import 'core.scss';
+
 .container {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  padding: 20px;
+  padding: 20px 0 5px 0;
+
+  .modal-container {
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    .modal-content {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      background-color: #fff;
+      border-radius: 10px;
+      height: 150px;
+      width: 200px;
+      padding: 10px;
+
+      .winning-text {
+        font-size: 18px;
+      }
+
+      .play-again-prompt {
+        margin: 5px 0;
+      }
+    }
+  }
+
+  .modal-fade-out {
+    opacity: 0;
+    z-index: -9999;
+    transition: all .3s linear;
+    -webkit-transition: all .3s linear;
+    visibility: hidden;
+  }
+
+  .modal-fade-in {
+    opacity: 1;
+    z-index: 9999;
+    transition: all .3s linear;
+    -webkit-transition: all .3s linear;
+  }
 
   .header-container {
     display: flex;
@@ -22,7 +71,7 @@
   .hand-container {
     display: flex;
     justify-content: center;
-    flex-direction: row;
+    flex-flow: row wrap;
     padding: 20px;
 
     .card {
@@ -32,16 +81,5 @@
 
   .action-container {
     flex-direction: row;
-    
-    .action {
-      text-align: center;
-      cursor: pointer;
-      padding: 10px;
-      margin: 10px;
-      background-color: #000;
-      border-radius: 10px;
-      width: 100px;
-      color: #fff;
-    }
   }
 }
