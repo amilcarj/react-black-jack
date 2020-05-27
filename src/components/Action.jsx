@@ -1,6 +1,5 @@
 import React from 'react';
-
-import './action.scss';
+import '../styles/blackJack.scss';
 
 class Action extends React.Component {
   constructor(props) {
@@ -8,9 +7,11 @@ class Action extends React.Component {
   }
 
   render() {
+    const { onPress, title } = this.props;
+
     return (
-      <div className="container">
-        test action
+      <div className='action' onPress={onPress}>
+        {title}
       </div>
     );
   }
