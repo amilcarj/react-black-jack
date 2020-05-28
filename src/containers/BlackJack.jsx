@@ -26,6 +26,7 @@ class BlackJack extends React.Component {
       houseScore: 0,
 
       winner: '',
+      playerName: ''
     }
   }
 
@@ -136,7 +137,8 @@ class BlackJack extends React.Component {
   };
 
   render() {
-    const { playerHand, houseHand, playerScore, houseScore, winner } = this.state;
+    const { playerHand, houseHand, playerScore, houseScore, winner, playerName } = this.state;
+    const user = playerName || 'Player';
 
     return (
       <div className='container'>
@@ -145,10 +147,14 @@ class BlackJack extends React.Component {
           initializeGame={this._initializeGame}
           ref={modal => this.modal = modal}
           />
-        <Header playerScore={playerScore} houseScore={houseScore} />
-        <Hand hand={houseHand} />
-        <Hand hand={playerHand} />
-        <div className='container action-container'>
+        <Header
+          playerScore={playerScore}
+          houseScore={houseScore}
+          playerName={user}
+          />
+        <Hand hand={houseHand} label={'House'} />
+        <Hand hand={playerHand} label={user} />
+        <div className='action-container'>
           <Action onPress={this._drawCard} title='Hit' />
           <Action onPress={this._stand} title='Stand' />
         </div>

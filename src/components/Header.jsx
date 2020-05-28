@@ -8,11 +8,10 @@ class Header extends React.Component {
 
   render() {
     const { playerScore, houseScore, playerName } = this.props;
-    const user = playerName || 'Player';
 
     return (
       <div className='header-container'>
-        <p>{user} Score: {playerScore}</p>
+        <p>{playerName} Score: {playerScore}</p>
         <p>House Score: {houseScore}</p>
       </div>
     );

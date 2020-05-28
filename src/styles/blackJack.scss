@@ -71,15 +71,31 @@
   .hand-container {
     display: flex;
     justify-content: center;
-    flex-flow: row wrap;
-    padding: 20px;
+    flex-direction: column;
+    padding: 10px 10px 0 10px;
 
-    .card {
-      margin: 10px;
+    .hand-label {
+      font-size: 18px;
+      text-align: center;
+      margin: 8px;
+    }
+
+    .hand {
+      display: flex;
+      justify-content: center;
+      flex-flow: row wrap;
+  
+      .card {
+        margin: 10px;
+      }  
     }
   }
 
   .action-container {
     flex-direction: row;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
   }
 }

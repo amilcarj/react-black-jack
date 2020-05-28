@@ -23,7 +23,10 @@ class Hand extends React.Component {
     
     return (
       <div className='hand-container'>
-        {cards}
+        <div className='bold hand-label'>{this.props.label}'s Hand</div>
+        <div className='hand'>
+          {cards}
+        </div>
       </div>
     );
   }
