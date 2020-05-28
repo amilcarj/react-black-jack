@@ -92,7 +92,7 @@ class BlackJack extends React.Component {
     hand.forEach(card => {
       if (card.name === ACE && isPlayer) {
         //the instructions weren't clear about the Ace's value for the house
-        //so I'm assuming it'll be 10 for the house but 11 or 1 for thee player
+        //so I'm assuming it'll be 10 for the house but 11 or 1 for the player
         aceCount++;
       } else {
         score += card.value;
