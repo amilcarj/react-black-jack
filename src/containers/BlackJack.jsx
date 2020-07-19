@@ -3,7 +3,7 @@ import React from 'react';
 import WinnerModal from '../components/WinnerModal';
 import Header from '../components/Header';
 import Action from '../components/Action';
-import Hand from './Hand';
+import Hand from '../components/Hand';
 import BlackJackApi from '../api/BlackJackApi';
 import '../styles/blackJack.scss';
 
@@ -26,7 +26,9 @@ class BlackJack extends React.Component {
       houseScore: 0,
 
       winner: '',
-      playerName: ''
+      playerName: '',
+
+      showModal: false,
     }
   }
 
@@ -80,7 +82,7 @@ class BlackJack extends React.Component {
 
     if (winner) {
       this.setState({ winner }, () => {
-        this.modal.openModal();
+        this._openModal();
       });
     }
   };
@@ -136,16 +138,27 @@ class BlackJack extends React.Component {
     this._endGame();
   };
 
+  _closeModal = () => {
+    this.setState((prevState) => prevState.showModal = false, 
+      () => {
+        this._initializeGame();
+      });
+  };
+
+  _openModal = () => {
+    this.setState((prevState) => prevState.showModal = true);
+  };
+
   render() {
-    const { playerHand, houseHand, playerScore, houseScore, winner, playerName } = this.state;
+    const { playerHand, houseHand, playerScore, houseScore, winner, playerName, showModal } = this.state;
     const user = playerName || 'Player';
 
     return (
       <div className='container'>
         <WinnerModal 
           playerWon={winner === PLAYER}
-          initializeGame={this._initializeGame}
-          ref={modal => this.modal = modal}
+          closeModal={this._closeModal}
+          showModal={showModal}
           />
         <Header
           playerScore={playerScore}
